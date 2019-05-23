@@ -10,7 +10,7 @@ module.exports = {
      * @param {string[]} list
      */
     callNames: function(list) {
-        const mapCall = name => `Hola ${name}! Aqui esta tu nombre.`;
+        const mapCall = name => `Hola ${name}! Aqui esta tu nombre.`.replace('\r', '');
         return list.map(mapCall);
     }
 }
