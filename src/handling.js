@@ -15,6 +15,7 @@ module.exports = {
                 // mistaken assumption: throwing here...
                 if (err) {
                     throw `This is a sync ${err}`;
+                    // EL catch nunca se va disparar porque usamos un throw
                 }
             });
         } catch (err) {
