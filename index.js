@@ -6,14 +6,16 @@ const server = http.createServer((req, res) => {
   fs.readFile('./resources/my_page.html', (err, content) => {
     if (err) { console.error(err); return; }
 
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.end(content, 'utf-8');
+    res.writeHead(200, { 'Content-Type': 'text/html' })
+    res.end(content, 'utf-8')
   })
 })
 
 server.listen(port, () => {
   console.log(`Server running at http://localhost:${port}/`);
-});
+})
+
+// Example more complet https://github.com/johnserrano15/serverAloneNodejs
 
 // Otra forma de crear un server basic
 /* http.createServer(function (req, res) {
