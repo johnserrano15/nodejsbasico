@@ -16,6 +16,7 @@ function initExpress(){
     app.listen(PORT, ()=>{
         console.log("El servidor Express esta activo.");
     });
+    // Dos eventos que esperan dos señales por si pasa algo con node para cerrar la conexion con mongodb
     process.on("SIGINT", closeApp);
     process.on("SIGTERM", closeApp);
 }
