@@ -1,14 +1,48 @@
+const { newGame } = require("./gameState");
+
 module.exports = () => {
 	let players = {},
 		onWait = [],
 		onMatch = {};
 
-	/**
-	 * 
-	 * Comience aqui
-	 * 
-	 */
+	const loop = setInterval(checkQueue, 5000);
 
+	function printListStatus() {
+		console.info(`Queues:{ Players: ${Object.keys(players).length}, Onwait: ${onWait.length}; OnMatch: ${Object.keys(onMatch).length}; }`)
+	}
+
+	function checkQueue() {
+		printListStatus();
+		while (onWait.length >= 2) {
+			console.log("Constructing room...");
+			constructRoom(onWait.pop(), onWait.pop());
+		}
+	}
+
+	function constructRoom(pOneID, pTwoID) {
+		const roomID = pOneID + pTwoID;
+		players[pOneID].roomID = roomID;
+		players[pTwoID].roomID = roomID;
+		console.log(`Room created for ${pOneID} and ${pTwoID}`);
+		
+		if (!onMatch[roomID]) onMatch[roomID] = newGame({
+			players: [players[pOneID], players[pTwoID]],
+			roomID,
+		});
+		players[pOneID].socket.emit("gameState", newGame({
+			players: [players[pOneID], players[pTwoID]],
+			roomID,
+			playerId: 0,
+			opponentId: 1,
+		}));
+		players[pTwoID].socket.emit("gameState", newGame({
+			players: [players[pOneID], players[pTwoID]],
+			roomID,
+			playerId: 1,
+			opponentId: 0,
+		}));
+	}
+	
 	return {
 		// user: {socket, user}
 		userConnect: ({ socket, user }) => {
